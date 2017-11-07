@@ -1,8 +1,5 @@
 ﻿page_n = 1
 part1 = {}--“”
---Part1.Page1
---chapter1 = require 'codex.lua'
---print(chapter1[1])
 page_l = #part1
 -----------------
 
@@ -161,8 +158,6 @@ function main_OnLoad()
   main:SetPoint("TOPLEFT",20,-104)
   main:SetWidth(185)
   main:SetHeight(182)
-  --local options = require 'tst'
-  --DEFAULT_CHAT_FRAME:AddMessage(options.title);
 end
 
 local FrameBackdrop = {
