@@ -1,0 +1,12 @@
+## Interface: 30300
+## Title: LeagueOfMurders
+## Notes-ruRU: Модификация для членов гильдии Лига Убийц
+## Author: Manik
+## SavedVariables: 
+## SavedVariablesPerCharacter: 
+
+embeds.xml
+
+core.lua
+
+modules.xml

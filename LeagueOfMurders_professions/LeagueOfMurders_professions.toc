@@ -1,0 +1,8 @@
+## Interface: 30300
+## Title: LeagueOfMurders |cFF822626Profs
+## Notes-ruRU: Отдел снабжения
+## Author: Manik
+## Dependencies: LeagueOfMurders
+## SavedVariables: 
+## SavedVariablesPerCharacter: 
+

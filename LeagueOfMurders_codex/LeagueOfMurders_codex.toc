@@ -1,0 +1,9 @@
+## Interface: 30300
+## Title: LeagueOfMurders |cFF822626Codex
+## Notes-ruRU: Кодекс "Лиги Убийц"
+## Author: Manik
+## Dependencies: LeagueOfMurders
+## SavedVariables: 
+## SavedVariablesPerCharacter: 
+
+codex.lua
