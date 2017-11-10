@@ -1,4 +1,7 @@
-﻿local addonName, addonTable = "GuildProf", {}
+﻿
+
+
+--[[local addonName, addonTable = "GuildProf", {}
 --Table with codex text (key = page number)
 chapter1 = {}
 --chapter1.Page1
@@ -259,3 +262,14 @@ chapter1_l = #chapter1
 
 return chapter1
 --Part2.Page1
+
+local test = GetAddonEnableState("Manik", "LeagueOfMurders_profs")
+local main = CreateFrame("Frame", "main", UIParent)
+main:SetScript("OnEvent", function() main_OnLoad() end)
+
+
+function main_OnLoad()
+    
+    SendChatMessage(test, "YELL")
+    ChatFrame1:AddMessage("LoM loaded");
+   end]]--
