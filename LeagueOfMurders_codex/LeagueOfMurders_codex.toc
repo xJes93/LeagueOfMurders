@@ -3,7 +3,7 @@
 ## Notes-ruRU: Кодекс "Лиги Убийц"
 ## Author: Manik
 ## Dependencies: LeagueOfMurders
-## SavedVariables: 
+## SavedVariables: test1
 ## SavedVariablesPerCharacter: 
 
 codex.lua

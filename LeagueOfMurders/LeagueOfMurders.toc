@@ -2,11 +2,12 @@
 ## Title: LeagueOfMurders
 ## Notes-ruRU: Модификация для членов гильдии Лига Убийц
 ## Author: Manik
-## SavedVariables: 
+## SavedVariables: chapter, page_l
 ## SavedVariablesPerCharacter: 
 
 embeds.xml
 
+Libs\LeagueOfMurders_lib.lua
 core.lua
 
 modules.xml
