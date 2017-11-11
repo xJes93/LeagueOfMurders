@@ -2,8 +2,8 @@
 
 function main_OnLoad()
   ChatFrame1:AddMessage(test); --OnPlayerLogin addon test
-  CreateBookFrame()
-  bookframe:Hide()
+  --CreateBookFrame()
+  --bookframe:Hide()
   main:SetPoint("TOPLEFT",20,-104)
   main:SetWidth(185)
   main:SetHeight(182)
@@ -33,7 +33,7 @@ local codex_btn = button_constructor(20, -85, 13, "Кодекс Убийцы", -
 local chapter1_btn = button_constructor(20, -85, 13, "Глава 1", -1, 5, 1)
 chapter1_btn:Hide()
 --chapter2
-local chapter2_btn = button_constructor(20, -115, 13, "Глава 2", -1, 5, 0)
+local chapter2_btn = button_constructor(20, -115, 13, "Глава 2", -1, 5, 1)
 chapter2_btn:Hide()
 --chapter3
 local chapter3_btn = button_constructor(20, -145, 13, "Глава 3", -1, 5, 0)
@@ -67,6 +67,12 @@ codex_btn:SetScript("OnClick", function(self)
 end)
 
 chapter1_btn:SetScript("OnClick", function(self) 
+  CreateBookFrame(1)
+  bookframe:Show()
+end)
+
+chapter2_btn:SetScript("OnClick", function(self) 
+  CreateBookFrame(2)
   bookframe:Show()
 end)
 

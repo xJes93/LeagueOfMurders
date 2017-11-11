@@ -5,7 +5,6 @@
 --Variables
 PAGE_N = 1
 
-
 button_size = { 
     width = 145, 
     height = 37
@@ -19,14 +18,14 @@ button_size = {
   }
 
 --Temp
-
   chapter = {{},{}}
-  --chapter[1][13] = "123"
-  page_l = #chapter[1]
   test = "Addon is loaded" 
 
 --Functions
-function CreateBookFrame()
+function CreateBookFrame(chap)
+  page_l = #chapter[chap]
+  --if bookframe == nil then // it's working
+  --end
     bookframe = CreateFrame("Frame", "BookFrame", UIParent)
     bookframe:EnableMouse(true)
     bookframe:SetMovable(true)
@@ -37,7 +36,7 @@ function CreateBookFrame()
       prev_button:Disable()
       next_button:Enable()
       page_number:SetText(pageNtext)
-      page_text:SetText(chapter[1][1])
+      page_text:SetText(chapter[chap][1])
       end)
     bookframe:SetScript("OnDragStart", function(self) 
       self:StartMoving() 
@@ -100,7 +99,7 @@ function CreateBookFrame()
     page_text:SetFont("Fonts\\MORPHEUS.ttf", 14)
     page_text:SetJustifyH("LEFT")--Text alighment
     page_text:SetJustifyV("TOP")
-    page_text:SetText(chapter[1][1])
+    page_text:SetText(chapter[chap][1])
     page_text:SetPoint("TOP", texture_topleft, "CENTER", 58, 35)
     page_text:SetTextColor(0.2,0.15,0.10)
     page_text:SetWordWrap(true)
@@ -126,7 +125,7 @@ function CreateBookFrame()
       if page_n<2 then prev_button:Disable() else prev_button:Enable() end
       pageNtext = page_n .. [[ из ]] .. page_l 
       page_number:SetText(pageNtext) 
-      page_text:SetText(chapter[1][page_n])
+      page_text:SetText(chapter[chap][page_n])
       PlaySound("igMainMenuOption") 
     end)
     
@@ -145,9 +144,10 @@ function CreateBookFrame()
       if page_n>22 then next_button:Disable() else next_button:Enable() end
       pageNtext = page_n .. [[ из ]] .. page_l 
       page_number:SetText(pageNtext) 
-      page_text:SetText(chapter[1][page_n])
+      page_text:SetText(chapter[chap][page_n])
       PlaySound("igMainMenuOption") 
     end)
+  
   end
 
   function button_constructor(x, y, size, text, text_x, text_y, enbld)
