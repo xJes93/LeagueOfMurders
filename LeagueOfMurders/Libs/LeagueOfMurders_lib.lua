@@ -23,30 +23,18 @@ button_size = {
 
 --Functions
 function CreateBookFrame(chap)
-  page_l = #chapter[chap]
-  --if bookframe == nil then // it's working
-  --end
+  --variables
+  page_n = 1--every time
+  page_l = #chapter[chap]--every time
+  pageNtext = page_n .. [[ из ]] .. page_l--every time
+  
+  if bookframe == nil then 
     bookframe = CreateFrame("Frame", "BookFrame", UIParent)
     bookframe:EnableMouse(true)
     bookframe:SetMovable(true)
     bookframe:RegisterForDrag("LeftButton")
-    bookframe:SetScript("OnShow", function(self)
-      page_n = 1
-      pageNtext = page_n .. [[ из ]] .. page_l
-      prev_button:Disable()
-      next_button:Enable()
-      page_number:SetText(pageNtext)
-      page_text:SetText(chapter[chap][1])
-      end)
-    bookframe:SetScript("OnDragStart", function(self) 
-      self:StartMoving() 
-      end)
-    bookframe:SetScript("OnDragStop", function(self) 
-      self:StopMovingOrSizing() 
-    end)
     bookframe:SetWidth(384)
     bookframe:SetHeight(512)
-    bookframe:SetPoint("TOPLEFT",225,-100)
     
     local texture_icon = bookframe:CreateTexture(nil, "BACKGROUND", nil, -8)
     texture_icon:SetPoint("TOPLEFT",10,-8)
@@ -78,37 +66,28 @@ function CreateBookFrame(chap)
     texture_botright:SetHeight(256)
     texture_botright:SetTexture("Interface\\Spellbook\\UI-SpellbookPanel-BotRight")
     
-    local close_button = CreateFrame("Button", nil, bookframe)
+    close_button = CreateFrame("Button", nil, bookframe)
     close_button:SetPoint("CENTER", BookFrame, "TOPRIGHT", -44, -25)
     close_button:SetWidth(32)
     close_button:SetHeight(32)
     close_button:SetNormalTexture("Interface\\Buttons\\UI-Panel-MinimizeButton-Up")
     close_button:SetPushedTexture("Interface\\Buttons\\UI-Panel-MinimizeButton-Down")
     close_button:SetHighlightTexture("Interface\\Buttons\\UI-Panel-MinimizeButton-Highlight")
-    close_button:SetScript("OnClick", function(self) 
-      PlaySound("igMainMenuOption") 
-      self:GetParent():Hide() 
-    end)
     
-    local header_text = bookframe:CreateFontString("headerText", "ARTWORK", -5)
+    header_text = bookframe:CreateFontString("headerText", "ARTWORK", -5)
     header_text:SetFontObject("GameFontNormal")
-    header_text:SetText("Глава 1. Основание Лиги")--REPLACE with variable
     header_text:SetPoint("TOP", bookframe, 4, -20)
     
     page_text = bookframe:CreateFontString("pageText", "ARTWORK", -5)
     page_text:SetFont("Fonts\\MORPHEUS.ttf", 14)
-    page_text:SetJustifyH("LEFT")--Text alighment
+    page_text:SetJustifyH("LEFT")
     page_text:SetJustifyV("TOP")
-    page_text:SetText(chapter[chap][1])
     page_text:SetPoint("TOP", texture_topleft, "CENTER", 58, 35)
     page_text:SetTextColor(0.2,0.15,0.10)
     page_text:SetWordWrap(true)
     
-    page_n = 1
-    pageNtext = page_n .. [[ из ]] .. page_l
     page_number = bookframe:CreateFontString("pageNumber", "ARTWORK", -5)
     page_number:SetFontObject("GameFontNormal")
-    page_number:SetText(pageNtext)
     page_number:SetPoint("TOP", bookframe, 7, -50)
     
     next_button = CreateFrame("Button", nil, bookframe)
@@ -119,9 +98,9 @@ function CreateBookFrame(chap)
     next_button:SetPushedTexture("Interface\\Buttons\\UI-SpellbookIcon-NextPage-Down")
     next_button:SetHighlightTexture("Interface\\Buttons\\UI-Common-MouseHilight")
     next_button:SetDisabledTexture("Interface\\Buttons\\UI-SpellbookIcon-NextPage-Disabled")
-    next_button:SetScript("OnClick", function() 
+    next_button:SetScript("OnClick", function()
       page_n = page_n+1 
-      if page_n>page_l-1 then next_button:Disable() else next_button:Enable() end--??
+      if page_n>page_l-1 then next_button:Disable() else next_button:Enable() end
       if page_n<2 then prev_button:Disable() else prev_button:Enable() end
       pageNtext = page_n .. [[ из ]] .. page_l 
       page_number:SetText(pageNtext) 
@@ -138,16 +117,46 @@ function CreateBookFrame(chap)
     prev_button:SetPushedTexture("Interface\\Buttons\\UI-SpellbookIcon-PrevPage-Down")
     prev_button:SetHighlightTexture("Interface\\Buttons\\UI-Common-MouseHilight")
     prev_button:SetDisabledTexture("Interface\\Buttons\\UI-SpellbookIcon-PrevPage-Disabled")
-    prev_button:SetScript("OnClick", function() 
+    prev_button:SetScript("OnClick", function() --
       page_n = page_n-1 
-      if page_n<2 then prev_button:Disable() else prev_button:Enable() end--??
+      if page_n<2 then prev_button:Disable() else prev_button:Enable() end
       if page_n>22 then next_button:Disable() else next_button:Enable() end
       pageNtext = page_n .. [[ из ]] .. page_l 
       page_number:SetText(pageNtext) 
       page_text:SetText(chapter[chap][page_n])
       PlaySound("igMainMenuOption") 
+      end)
+  end
+--functions
+
+    
+    bookframe:SetScript("OnShow", function(self) --
+      page_n = 1
+      pageNtext = page_n .. [[ из ]] .. page_l
+      prev_button:Disable()
+      next_button:Enable()
+      page_number:SetText(pageNtext)
+      page_text:SetText(chapter[chap][1])
+      end)
+    bookframe:SetScript("OnDragStart", function(self) --
+      self:StartMoving() 
+      end)
+    bookframe:SetScript("OnDragStop", function(self) --
+      self:StopMovingOrSizing() 
     end)
-  
+
+    close_button:SetScript("OnClick", function(self) 
+      PlaySound("igMainMenuOption") 
+      self:GetParent():Hide() 
+    end)
+
+    if page_n>page_l-1 then next_button:Disable() else next_button:Enable() end
+    if page_n<2 then prev_button:Disable() else prev_button:Enable() end
+    page_number:SetText(pageNtext)--every time
+    bookframe:SetPoint("TOPLEFT",225,-100)--every time
+    header_text:SetText(button_text) -- every time
+    page_text:SetText(chapter[chap][1])
+    
   end
 
   function button_constructor(x, y, size, text, text_x, text_y, enbld)
@@ -157,10 +166,9 @@ function CreateBookFrame(chap)
     Frame:SetPushedTexture("Interface\\Buttons\\UI-DialogBox-Button-Down")
     Frame:SetHighlightTexture("Interface\\Buttons\\UI-DialogBox-Button-Highlight")
     Frame:SetDisabledTexture("Interface\\Buttons\\UI-DialogBox-Button-Disabled")
-    Frame:SetScript("OnClick", function() end)
     Frame:SetSize(button_size.width, button_size.height)
   
-    local btn_text = Frame:CreateFontString(nil, "ARTWORK", 1)
+    btn_text = Frame:CreateFontString(nil, "ARTWORK", 1)
     btn_text:SetFont("Fonts\\FRIZQT__.TTF", size)
     btn_text:SetJustifyH("LEFT")
     btn_text:SetJustifyV("TOP")

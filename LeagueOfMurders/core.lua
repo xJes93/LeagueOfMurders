@@ -1,4 +1,5 @@
 ﻿local playerName = UnitName("player")--Temp
+button_text = ""
 
 function main_OnLoad()
   ChatFrame1:AddMessage(test); --OnPlayerLogin addon test
@@ -30,27 +31,27 @@ logo_main:SetTexture("Interface\\AddOns\\LeagueOfMurders\\Main-Logo.tga")
 --codex
 local codex_btn = button_constructor(20, -85, 13, "Кодекс Убийцы", -1, 5, 1)
 --chapter1
-local chapter1_btn = button_constructor(20, -85, 13, "Глава 1", -1, 5, 1)
+chapter1_btn, chap1_txt = button_constructor(20, -85, 13, "Глава 1", -1, 5, 1)
 chapter1_btn:Hide()
 --chapter2
-local chapter2_btn = button_constructor(20, -115, 13, "Глава 2", -1, 5, 1)
+chapter2_btn, chap2_txt = button_constructor(20, -115, 13, "Глава 2", -1, 5, 1)
 chapter2_btn:Hide()
 --chapter3
-local chapter3_btn = button_constructor(20, -145, 13, "Глава 3", -1, 5, 0)
+chapter3_btn, chap3_txt = button_constructor(20, -145, 13, "Глава 3", -1, 5, 0)
 chapter3_btn:Hide()
 --chapter4
-local chapter4_btn = button_constructor(20, -175, 13, "Глава 4", -1, 5, 0)
+chapter4_btn, chap4_txt = button_constructor(20, -175, 13, "Глава 4", -1, 5, 0)
 chapter4_btn:Hide()
 --chapter5
-local chapter5_btn = button_constructor(20, -205, 13, "Глава 5", -1, 5, 0)
+chapter5_btn, chap5_txt = button_constructor(20, -205, 13, "Глава 5", -1, 5, 0)
 chapter5_btn:Hide()
 --back
-local back_btn = button_constructor(20, -245, 13, "Назад", -1, 5, 1)
+back_btn = button_constructor(20, -245, 13, "Назад", -1, 5, 1)
 back_btn:Hide()
 --supply
-local btn2 = button_constructor(20, -115, 13, "Отдел снабжения", 0, 5, 0)
+btn2 = button_constructor(20, -115, 13, "Отдел снабжения", 0, 5, 0)
 --exit
-local close_btn = button_constructor(20, -155, 13, "Выход", 0, 5, 1)
+close_btn = button_constructor(20, -155, 13, "Выход", 0, 5, 1)
 
 codex_btn:SetScript("OnClick", function(self) 
   PlaySound("igMainMenuOption")
@@ -67,11 +68,13 @@ codex_btn:SetScript("OnClick", function(self)
 end)
 
 chapter1_btn:SetScript("OnClick", function(self) 
+  button_text = chap1_txt:GetText()
   CreateBookFrame(1)
   bookframe:Show()
 end)
 
 chapter2_btn:SetScript("OnClick", function(self) 
+  button_text = chap2_txt:GetText()
   CreateBookFrame(2)
   bookframe:Show()
 end)
