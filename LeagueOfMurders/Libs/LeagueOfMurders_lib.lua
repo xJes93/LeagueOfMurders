@@ -1,32 +1,43 @@
---Functions:
---CreateBookFrame() - Book frame constructor
---button_constructor() - Button constructor for mainframe
-
---Variables
-PAGE_N = 1
-
-button_size = { 
-    width = 145, 
-    height = 37
-  }
-
-  FrameBackdrop = {
-    bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",
-    edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border",
-    tile = true, tileSize = 32, edgeSize = 32,
-    insets = { left = 8, right = 8, top = 8, bottom = 8 }
-  }
+--[[
+Functions:
+CreateBookFrame(chap) - Book frame constructor
+  variables:
+  chap - number of chapter
+button_constructor(x, y, size, text, text_x, text_y, enbld) - Button constructor for mainframe
+  variables:
+  x - Button x position
+  y - Button y position
+  size - Button size
+  text - Button text
+  text_x - Text x position
+  text_y - Text y position
+  enbld - Enabled
+]]
 
 --Temp
-  chapter = {{},{}}
-  test = "Addon is loaded" 
+test = "Addon is loaded"
+
+--Variables
+chapter = {{},{},{},{}}
+
+button_size = { 
+  width = 145, 
+  height = 37
+}
+
+FrameBackdrop = {
+  bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",
+  edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border",
+  tile = true, tileSize = 32, edgeSize = 32,
+  insets = { left = 8, right = 8, top = 8, bottom = 8 }
+}
 
 --Functions
 function CreateBookFrame(chap)
   --variables
-  page_n = 1--every time
-  page_l = #chapter[chap]--every time
-  pageNtext = page_n .. [[ из ]] .. page_l--every time
+  page_n = 1
+  page_l = #chapter[chap]
+  pageNtext = page_n .. [[ из ]] .. page_l
   
   if bookframe == nil then 
     bookframe = CreateFrame("Frame", "BookFrame", UIParent)
@@ -35,6 +46,20 @@ function CreateBookFrame(chap)
     bookframe:RegisterForDrag("LeftButton")
     bookframe:SetWidth(384)
     bookframe:SetHeight(512)
+    bookframe:SetScript("OnShow", function(self)
+      page_n = 1
+      pageNtext = page_n .. [[ из ]] .. page_l
+      prev_button:Disable()
+      next_button:Enable()
+      page_number:SetText(pageNtext)
+      page_text:SetText(chapter[chap][1])
+      end)
+    bookframe:SetScript("OnDragStart", function(self) --
+      self:StartMoving() 
+      end)
+    bookframe:SetScript("OnDragStop", function(self) --
+      self:StopMovingOrSizing() 
+      end)
     
     local texture_icon = bookframe:CreateTexture(nil, "BACKGROUND", nil, -8)
     texture_icon:SetPoint("TOPLEFT",10,-8)
@@ -98,15 +123,6 @@ function CreateBookFrame(chap)
     next_button:SetPushedTexture("Interface\\Buttons\\UI-SpellbookIcon-NextPage-Down")
     next_button:SetHighlightTexture("Interface\\Buttons\\UI-Common-MouseHilight")
     next_button:SetDisabledTexture("Interface\\Buttons\\UI-SpellbookIcon-NextPage-Disabled")
-    next_button:SetScript("OnClick", function()
-      page_n = page_n+1 
-      if page_n>page_l-1 then next_button:Disable() else next_button:Enable() end
-      if page_n<2 then prev_button:Disable() else prev_button:Enable() end
-      pageNtext = page_n .. [[ из ]] .. page_l 
-      page_number:SetText(pageNtext) 
-      page_text:SetText(chapter[chap][page_n])
-      PlaySound("igMainMenuOption") 
-    end)
     
     prev_button = CreateFrame("Button", nil, bookframe)
     prev_button:Disable()
@@ -117,71 +133,67 @@ function CreateBookFrame(chap)
     prev_button:SetPushedTexture("Interface\\Buttons\\UI-SpellbookIcon-PrevPage-Down")
     prev_button:SetHighlightTexture("Interface\\Buttons\\UI-Common-MouseHilight")
     prev_button:SetDisabledTexture("Interface\\Buttons\\UI-SpellbookIcon-PrevPage-Disabled")
-    prev_button:SetScript("OnClick", function() --
-      page_n = page_n-1 
-      if page_n<2 then prev_button:Disable() else prev_button:Enable() end
-      if page_n>22 then next_button:Disable() else next_button:Enable() end
-      pageNtext = page_n .. [[ из ]] .. page_l 
-      page_number:SetText(pageNtext) 
-      page_text:SetText(chapter[chap][page_n])
-      PlaySound("igMainMenuOption") 
-      end)
   end
---functions
 
-    
-    bookframe:SetScript("OnShow", function(self) --
-      page_n = 1
-      pageNtext = page_n .. [[ из ]] .. page_l
-      prev_button:Disable()
-      next_button:Enable()
-      page_number:SetText(pageNtext)
-      page_text:SetText(chapter[chap][1])
-      end)
-    bookframe:SetScript("OnDragStart", function(self) --
-      self:StartMoving() 
-      end)
-    bookframe:SetScript("OnDragStop", function(self) --
-      self:StopMovingOrSizing() 
-    end)
 
-    close_button:SetScript("OnClick", function(self) 
-      PlaySound("igMainMenuOption") 
-      self:GetParent():Hide() 
-    end)
 
+  --functions
+  next_button:SetScript("OnClick", function()
+    page_n = page_n+1 
     if page_n>page_l-1 then next_button:Disable() else next_button:Enable() end
     if page_n<2 then prev_button:Disable() else prev_button:Enable() end
-    page_number:SetText(pageNtext)--every time
-    bookframe:SetPoint("TOPLEFT",225,-100)--every time
-    header_text:SetText(button_text) -- every time
-    page_text:SetText(chapter[chap][1])
-    
-  end
+    pageNtext = page_n .. [[ из ]] .. page_l 
+    page_number:SetText(pageNtext) 
+    page_text:SetText(chapter[chap][page_n])
+    PlaySound("igMainMenuOption") 
+  end)
+  
+  prev_button:SetScript("OnClick", function() --
+    page_n = page_n-1 
+    if page_n<2 then prev_button:Disable() else prev_button:Enable() end
+    if page_n>page_l-1 then next_button:Disable() else next_button:Enable() end
+    pageNtext = page_n .. [[ из ]] .. page_l 
+    page_number:SetText(pageNtext) 
+    page_text:SetText(chapter[chap][page_n])
+    PlaySound("igMainMenuOption") 
+  end)
 
-  function button_constructor(x, y, size, text, text_x, text_y, enbld)
-    local Frame = CreateFrame("Button", nil, main)
-    Frame:SetPoint("LEFT", main, "TOPLEFT", x, y)
-    Frame:SetNormalTexture("Interface\\Buttons\\UI-DialogBox-Button-Up")
-    Frame:SetPushedTexture("Interface\\Buttons\\UI-DialogBox-Button-Down")
-    Frame:SetHighlightTexture("Interface\\Buttons\\UI-DialogBox-Button-Highlight")
-    Frame:SetDisabledTexture("Interface\\Buttons\\UI-DialogBox-Button-Disabled")
-    Frame:SetSize(button_size.width, button_size.height)
+  close_button:SetScript("OnClick", function(self) 
+    PlaySound("igMainMenuOption") 
+    self:GetParent():Hide() 
+  end)
+
+  if page_n>page_l-1 then next_button:Disable() else next_button:Enable() end
+  if page_n<2 then prev_button:Disable() else prev_button:Enable() end
+  page_number:SetText(pageNtext)--every time
+  bookframe:SetPoint("TOPLEFT",225,-100)--every time
+  header_text:SetText(button_text) -- every time
+  page_text:SetText(chapter[chap][1])
+end
+
+function button_constructor(x, y, size, text, text_x, text_y, enbld)
+  local Frame = CreateFrame("Button", nil, main)
+  Frame:SetPoint("LEFT", main, "TOPLEFT", x, y)
+  Frame:SetNormalTexture("Interface\\Buttons\\UI-DialogBox-Button-Up")
+  Frame:SetPushedTexture("Interface\\Buttons\\UI-DialogBox-Button-Down")
+  Frame:SetHighlightTexture("Interface\\Buttons\\UI-DialogBox-Button-Highlight")
+  Frame:SetDisabledTexture("Interface\\Buttons\\UI-DialogBox-Button-Disabled")
+  Frame:SetSize(button_size.width, button_size.height)
+
+  btn_text = Frame:CreateFontString(nil, "ARTWORK", 1)
+  btn_text:SetFont("Fonts\\FRIZQT__.TTF", size)
+  btn_text:SetJustifyH("LEFT")
+  btn_text:SetJustifyV("TOP")
+  btn_text:SetText(text)
+  btn_text:SetPoint("CENTER", Frame, "CENTER", text_x, text_y)
   
-    btn_text = Frame:CreateFontString(nil, "ARTWORK", 1)
-    btn_text:SetFont("Fonts\\FRIZQT__.TTF", size)
-    btn_text:SetJustifyH("LEFT")
-    btn_text:SetJustifyV("TOP")
-    btn_text:SetText(text)
-    btn_text:SetPoint("CENTER", Frame, "CENTER", text_x, text_y)
-  
-    if enbld == 0 then 
-      Frame:Disable()
-      btn_text:SetTextColor(0.5,0.5,0.5)
-      else
-      Frame:Enable()
-      btn_text:SetTextColor(0.95,0.95,0.95)
-    end
-  
-    return Frame, btn_text
+  if enbld == 0 then 
+    Frame:Disable()
+    btn_text:SetTextColor(0.5,0.5,0.5)
+    else
+    Frame:Enable()
+    btn_text:SetTextColor(0.95,0.95,0.95)
   end
+  
+  return Frame, btn_text
+end

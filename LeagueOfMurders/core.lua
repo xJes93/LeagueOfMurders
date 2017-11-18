@@ -3,8 +3,6 @@ button_text = ""
 
 function main_OnLoad()
   ChatFrame1:AddMessage(test); --OnPlayerLogin addon test
-  --CreateBookFrame()
-  --bookframe:Hide()
   main:SetPoint("TOPLEFT",20,-104)
   main:SetWidth(185)
   main:SetHeight(182)
@@ -37,7 +35,7 @@ chapter1_btn:Hide()
 chapter2_btn, chap2_txt = button_constructor(20, -115, 13, "Глава 2", -1, 5, 1)
 chapter2_btn:Hide()
 --chapter3
-chapter3_btn, chap3_txt = button_constructor(20, -145, 13, "Глава 3", -1, 5, 0)
+chapter3_btn, chap3_txt = button_constructor(20, -145, 13, "Глава 3", -1, 5, 1)
 chapter3_btn:Hide()
 --chapter4
 chapter4_btn, chap4_txt = button_constructor(20, -175, 13, "Глава 4", -1, 5, 0)
@@ -76,6 +74,18 @@ end)
 chapter2_btn:SetScript("OnClick", function(self) 
   button_text = chap2_txt:GetText()
   CreateBookFrame(2)
+  bookframe:Show()
+end)
+
+chapter3_btn:SetScript("OnClick", function(self) 
+  button_text = chap3_txt:GetText()
+  CreateBookFrame(3)
+  bookframe:Show()
+end)
+
+chapter4_btn:SetScript("OnClick", function(self) 
+  button_text = chap4_txt:GetText()
+  CreateBookFrame(4)
   bookframe:Show()
 end)
 
